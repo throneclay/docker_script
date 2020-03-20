@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# ==================================================================================
+# set up part these may vary from different hosts
+#
+docker_base=nvidia/cuda:10.1-cudnn7-devel
+
+data_path="-v /home/zhangshuai/workspace/data:/data"
+
+specify_option=""
+
+tensorrt_root="/opt/TensorRT-5.1.2.2"
+
+libtorch_root="/opt/libtorch"
+
+# ==================================================================================
+# options
+# must exist all these options. If not using, just set to 0
+USE_CONDA=1
+
+USE_TENSORRT=0
+
+USE_LIBTORCH=0
