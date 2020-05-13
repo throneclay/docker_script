@@ -16,6 +16,8 @@ libtorch_root="/opt/libtorch"
 # ==================================================================================
 # options
 # must exist all these options. If not using, just set to 0
+USE_CUDA=1
+
 USE_CONDA=1
 
 USE_TENSORRT=0
