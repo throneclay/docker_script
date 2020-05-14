@@ -50,7 +50,7 @@ function main() {
         exit
      fi
   fi
- 
+
   NVIDIA_SO=""
   NVIDIA_BIN=""
   NVIDIA_DEVICES=""
@@ -62,7 +62,7 @@ function main() {
       NVIDIA_BIN="-v /usr/bin/nvidia-smi:/usr/bin/nvidia-smi "
       NVIDIA_DEVICES=$(\ls /dev/nvidia* | xargs -I{} echo '--device {}:{} ')
   fi
-  
+
   dir_name="$(pwd | rev | awk -F \/ '{print $1}' | rev)"
   src_conf="-v `pwd`:/$dir_name"
 
@@ -99,9 +99,6 @@ function main() {
   # in case of docker exists
   docker start $docker_name
 
-  if [ "${USER}" != "root" ]; then
-        docker exec $docker_name bash -c 'bash docker/local_lib/docker_adduser.sh'
-  fi
   # common source setup
   docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
   docker exec $docker_name bash -c "/bin/sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
@@ -110,6 +107,11 @@ function main() {
     docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
   fi
   docker exec $docker_name bash -c "apt-get update && apt-get install sudo -y"
+
+  # set up users
+  if [ "${USER}" != "root" ]; then
+    docker exec $docker_name bash -c 'bash docker/local_lib/docker_adduser.sh'
+  fi
 
   if [ $USE_CONDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
