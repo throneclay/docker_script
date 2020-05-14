@@ -7,13 +7,15 @@ function main() {
   if [ ! -f scripts/custom.sh ]; then
     echo "not found custom.sh in scripts/ will create a default one"
     mkdir -p scripts
-    cp default/custom.default scripts/custom.sh
+    cp docker/default/custom.default scripts/custom.sh
+    exit
   fi
 
   if [ ! -f scripts/env_setup.sh ]; then
     echo "not found env_setup.sh in scripts/ will create a default one"
     mkdir -p scripts
-    cp default/env_setup.default scripts/env_setup.sh
+    cp docker/default/env_setup.default scripts/env_setup.sh
+    exit
   fi
   source scripts/custom.sh
 
@@ -90,8 +92,9 @@ function main() {
   # common source setup
   docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
   docker exec $docker_name bash -c "/bin/sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
-  docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
-
+  if [ $USE_CUDA -eq 1 ]; then
+    docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
+  fi
   if [ $USE_CONDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
   fi

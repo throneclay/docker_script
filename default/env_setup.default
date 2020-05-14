@@ -1,32 +1,15 @@
 #!/bin/bash
 
-source /root/miniconda3/etc/profile.d/conda.sh
+#source /root/miniconda3/etc/profile.d/conda.sh
 
-conda create --name ninth python=3.6 -y
-conda activate ninth
-conda install pytorch=1.2 torchvision -y
+#conda create --name ninth python=3.6 -y
+#conda activate ninth
+#conda install pytorch=1.2 torchvision -y
 
 # custom packages
 # ================================================================================================
 
-conda install scikit-image scipy numba pillow matplotlib opencv fire psutil tqdm -y
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple fire tensorboardX protobuf opencv-python
-
-# set up dataparse
-cd third-party/dataparse
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
-python setup.py build
-python setup.py install
-
-# set up spconv
-conda install -y cmake=3.13.2
-apt-get update
-apt-get install -y libboost-dev git libsm6 libxext6 libxrender-dev tmux htop
-git clone --recurse https://github.com/traveller59/spconv.git /tmp/spconv
-cd /tmp/spconv
-git checkout 6e727bc
-python setup.py bdist_wheel
-pip install dist/spconv-1.1-cp36-cp36m-linux_x86_64.whl
+echo "post process"
 
 # finished custom packages
 # ================================================================================================
