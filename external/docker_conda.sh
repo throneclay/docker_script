@@ -50,6 +50,6 @@ echo '
 [global]
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 ' >> /home/$DOCKER_USER/.config/pip/pip.config
-chown $DOCKER_USER: -R /home/$DOCKER_USER/.config
+chown $DOCKER_USER: -R /home/$DOCKER_USER/.conf
 
 echo "setup pip source success!!"
