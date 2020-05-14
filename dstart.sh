@@ -109,6 +109,7 @@ function main() {
   if [ $USE_CUDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
   fi
+  docker exec $docker_name bash -c "apt-get update && apt-get install sudo -y"
 
   if [ $USE_CONDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
