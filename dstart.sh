@@ -75,6 +75,7 @@ function main() {
       display="${DISPLAY}"
   fi
 
+  # get user id, will be echo as env variables in docker(docker_adduser.sh)
   USER_ID=$(id -u)
   GRP=$(id -g -n)
   GRP_ID=$(id -g)
