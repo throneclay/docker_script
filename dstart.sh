@@ -75,6 +75,10 @@ function main() {
       display="${DISPLAY}"
   fi
 
+  USER_ID=$(id -u)
+  GRP=$(id -g -n)
+  GRP_ID=$(id -g)
+
   docker run $NVIDIA_SO $NVIDIA_BIN $NVIDIA_DEVICES \
      --net=host \
      --name $docker_name \
@@ -82,6 +86,11 @@ function main() {
      $data_path \
      $specify_option \
      -e DISPLAY=$display \
+     -e DOCKER_USER=${USER} \
+     -e USER=${USER} \
+     -e DOCKER_USER_ID=${USER_ID} \
+     -e DOCKER_GRP="${GRP}" \
+     -e DOCKER_GRP_ID=${GRP_ID} \
      -itd \
      -w /$dir_name \
      $docker_base
@@ -89,12 +98,17 @@ function main() {
   # in case of docker exists
   docker start $docker_name
 
+  if [ "${USER}" != "root" ]; then
+        docker exec $docker_name bash -c 'bash docker/local_lib/docker_adduser.sh'
+  fi
   # common source setup
   docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
   docker exec $docker_name bash -c "/bin/sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
+
   if [ $USE_CUDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
   fi
+
   if [ $USE_CONDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
   fi
