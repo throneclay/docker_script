@@ -13,7 +13,7 @@ tensorrt_root="/opt/TensorRT-5.1.2.2"
 
 libtorch_root="/opt/libtorch"
 
-supervisor_config=""
+supervisor_config="scripts/supervisor.config"
 
 # ==================================================================================
 # options

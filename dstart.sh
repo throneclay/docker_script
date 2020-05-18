@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 function main() {
 
@@ -20,10 +21,9 @@ function main() {
   source scripts/custom.sh
 
   if [ $USE_SUPERVISOR -eq 1 ]; then
-    if [ ! -f scripts/env_setup.sh ]; then
+    if [ ! -f $supervisor_config ]; then
       mkdir -p scripts
       cp docker/default/supervisor.config.default scripts/supervisor.config.default
-      exit
     fi
   fi
   # install local libs
