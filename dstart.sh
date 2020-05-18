@@ -47,7 +47,9 @@ function main() {
      count=$(ls -1 $host_lib_path/libnvidia* |wc -l)
      if [ $count -eq 0 ]; then
         echo "not found nvidia driver!!!"
-        exit
+        if [ $USE_CUDA -eq 1 ]; then
+          exit
+        fi
      fi
   fi
 
@@ -110,13 +112,20 @@ function main() {
 
   # set up users
   if [ "${USER}" != "root" ]; then
-    docker exec $docker_name bash -c 'bash docker/local_lib/docker_adduser.sh'
+    docker exec $docker_name bash -c 'bash docker/external/docker_adduser.sh'
   fi
 
   if [ $USE_CONDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
   fi
-
+  # deploy using supervisor
+  if [ $USE_SUPERVISOR -eq 1 ]; then
+    if [ ! -f scripts/env_setup.sh ]; then
+      mkdir -p scripts
+      cp docker/default/supervisor.config.default scripts/supervisor.config.default
+    fi
+    docker exec $docker_name bash -c "/bin/bash docker/external/docker_supervisor.sh $supervisor_config"
+  fi
   # custom script run
   docker exec $docker_name bash -c "/bin/bash scripts/env_setup.sh"
 }

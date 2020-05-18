@@ -1,0 +1,11 @@
+[program:default]
+command=default
+directory=/default
+autostart=true
+autorestart=true
+startsecs=1
+startretries=800
+redirect_stderr=true
+user=work
+stdout_logfile=/tmp/default.out.log
+stderr_logfile=/tmp/default.err.log

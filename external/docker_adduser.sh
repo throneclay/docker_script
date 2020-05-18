@@ -1,3 +1,4 @@
+#!/bin/bash
 
 addgroup --gid "$DOCKER_GRP_ID" "$DOCKER_GRP"
 adduser --disabled-password --force-badname --gecos '' "$DOCKER_USER" \
