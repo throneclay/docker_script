@@ -19,6 +19,13 @@ function main() {
   fi
   source scripts/custom.sh
 
+  if [ $USE_SUPERVISOR -eq 1 ]; then
+    if [ ! -f scripts/env_setup.sh ]; then
+      mkdir -p scripts
+      cp docker/default/supervisor.config.default scripts/supervisor.config.default
+      exit
+    fi
+  fi
   # install local libs
   # ==================================================================================
 
@@ -120,10 +127,6 @@ function main() {
   fi
   # deploy using supervisor
   if [ $USE_SUPERVISOR -eq 1 ]; then
-    if [ ! -f scripts/env_setup.sh ]; then
-      mkdir -p scripts
-      cp docker/default/supervisor.config.default scripts/supervisor.config.default
-    fi
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_supervisor.sh $supervisor_config"
   fi
   # custom script run
