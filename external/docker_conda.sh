@@ -43,6 +43,10 @@ conda config --set show_channel_urls yes
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
 
+cp -r /root/.conda /home/$DOCKER_USER/
+cp /root/.condarc /home/$DOCKER_USER/
+chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda /home/$DOCKER_USER/.condarc
+
 echo "minconda setup success!!"
 
 mkdir -p /home/$DOCKER_USER/.config/pip/
