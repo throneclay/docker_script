@@ -74,6 +74,13 @@ function main() {
   dir_name="$(pwd | rev | awk -F \/ '{print $1}' | rev)"
   src_conf="-v `pwd`:/$dir_name"
 
+  # using outside cache of pkgs
+  if [ $USE_CONDA -eq 1 ]; then
+    if [ -d /home/$USER/miniconda3/pkgs ]; then
+      src_conf="$src_conf -v /home/$USER/miniconda3/pkgs:/opt/pkgs"
+    fi
+  fi
+
   docker_name="$dir_name"
 
   local display=""

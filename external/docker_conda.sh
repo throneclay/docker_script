@@ -9,6 +9,8 @@ if [ ! -f ./Miniconda3-latest-Linux-x86_64.sh ]; then
 fi
 chmod a+x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh -p /opt/miniconda3 -b
+rm -r /opt/miniconda3/pkgs
+ln -s /opt/pkgs/ /opt/miniconda3/pkgs
 
 echo '
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -23,6 +25,8 @@ else
 fi
 unset __conda_setup
 ' >> /home/$DOCKER_USER/.bashrc
+
+chown $DOCKER_USER: /home/$DOCKER_USER/.bashrc
 chown $DOCKER_USER: -R /opt/miniconda3/
 
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
