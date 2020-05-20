@@ -80,8 +80,11 @@ function main() {
       src_conf="$src_conf -v /home/$USER/miniconda3/pkgs:/opt/pkgs"
     fi
   fi
-
-  docker_name="$dir_name"
+  if [ $# -eq 1 ]; then
+    docker_name="$1"
+  else
+    docker_name="$dir_name"
+  fi
 
   local display=""
   if [[ -z ${DISPLAY} ]];then
@@ -139,4 +142,4 @@ function main() {
   docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
 }
 
-main
+main $*
