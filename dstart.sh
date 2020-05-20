@@ -129,7 +129,7 @@ function main() {
     docker exec $docker_name bash -c "/bin/bash docker/external/docker_supervisor.sh $supervisor_config"
   fi
   # custom script run
-  docker exec $docker_name bash -c "/bin/bash scripts/env_setup.sh"
+  docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
 }
 
 main
