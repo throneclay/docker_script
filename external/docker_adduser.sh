@@ -6,3 +6,4 @@ adduser --disabled-password --force-badname --gecos '' "$DOCKER_USER" \
 usermod -aG sudo "$DOCKER_USER"
 echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 echo "alias ls=\"ls --color=auto\"" >> /etc/bash.bashrc
+chown $DOCKER_USER: /home/$DOCKER_USER
