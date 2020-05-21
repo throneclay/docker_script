@@ -52,8 +52,8 @@ function main() {
      host_lib_path=/usr/lib/x86_64-linux-gnu
      count=$(ls -1 $host_lib_path/libnvidia* |wc -l)
      if [ $count -eq 0 ]; then
-        echo "not found nvidia driver!!!"
         if [ $USE_CUDA -eq 1 ]; then
+          echo "not found nvidia driver!!!"
           exit
         fi
      fi
