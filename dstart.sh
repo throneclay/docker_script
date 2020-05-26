@@ -76,8 +76,8 @@ function main() {
 
   # using outside cache of pkgs
   if [ $USE_CONDA -eq 1 ]; then
-    if [ -d /home/$USER/miniconda3/pkgs ]; then
-      src_conf="$src_conf -v /home/$USER/miniconda3/pkgs:/opt/pkgs"
+    if [ -d $HOME/miniconda3/pkgs ]; then
+      src_conf="$src_conf -v $HOME/miniconda3/pkgs:/opt/pkgs"
     fi
   fi
 
