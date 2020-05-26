@@ -9,7 +9,7 @@ data_path="-v /home/zhangshuai/workspace/data:/data"
 
 specify_option=""
 
-tensorrt_root="/opt/TensorRT-5.1.2.2"
+tensorrt_root="/opt/tensorrt"
 
 libtorch_root="/opt/libtorch"
 
