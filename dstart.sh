@@ -140,6 +140,10 @@ function main() {
   fi
   # custom script run
   docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
+
+  echo "docker commit $docker_name $docker_name:0.1.0"
+  echo "shared data path: "
+  echo "$data_path $src_conf"
 }
 
 main $*
