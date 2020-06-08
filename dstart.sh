@@ -81,6 +81,9 @@ function main() {
     fi
     if [ -d $HOME/.cache/pip ]; then
       src_conf="$src_conf -v $HOME/.cache/pip:/home/$USER/.cache/pip"
+    else
+      mkdir -p $HOME/.cache/pip
+      src_conf="$src_conf -v $HOME/.cache/pip:/home/$USER/.cache/pip"
     fi
   fi
   if [ $# -eq 1 ]; then
