@@ -59,5 +59,5 @@ echo '
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 ' >> /home/$DOCKER_USER/.config/pip/pip.conf
 chown $DOCKER_USER: -R /home/$DOCKER_USER/.config
-
+chown $DOCKER_USER: -R /home/$DOCKER_USER/.cache
 echo "setup pip source success!!"
