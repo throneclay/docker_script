@@ -111,8 +111,14 @@ function main() {
 
   LOCAL_HOST=`hostname`
 
+  # network setup
+  network_config="--net=host"
+  if [ "$(uname)" == "Darwin" ]; then
+    network_config="-P"
+  fi
+
   docker run $NVIDIA_SO $NVIDIA_BIN $NVIDIA_DEVICES \
-     --net=host \
+     $network_config \
      --name $docker_name \
      $src_conf \
      $data_path \
