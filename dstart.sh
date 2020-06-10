@@ -166,9 +166,10 @@ function main() {
   fi
   # custom script run
   docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
-
-  echo "docker commit $docker_name $docker_name:0.1.0"
-  echo "shared data path: "
+  echo ""
+  echo "docker prepare finished, next you can run bash docker/dinto.sh to get inside docker, or you can commit your own image by using:"
+  echo "  docker commit $docker_name $docker_name:0.1.0"
+  echo "the shared data path is : "
   echo "$data_path $src_conf"
 }
 
