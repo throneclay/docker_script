@@ -104,18 +104,27 @@ function main() {
   GRP=$(id -g -n)
   GRP_ID=$(id -g)
 
+  LOCAL_HOST=`hostname`
+
   docker run $NVIDIA_SO $NVIDIA_BIN $NVIDIA_DEVICES \
      --net=host \
      --name $docker_name \
      $src_conf \
      $data_path \
      $specify_option \
+     --privileged \
      -e DISPLAY=$display \
      -e DOCKER_USER=${USER} \
      -e USER=${USER} \
      -e DOCKER_USER_ID=${USER_ID} \
      -e DOCKER_GRP="${GRP}" \
      -e DOCKER_GRP_ID=${GRP_ID} \
+     -e LOCAL_HOSTNAME=${LOCAL_HOST} \
+     --hostname inside_docker \
+     --add-host inside_docker:127.0.0.1 \
+     --add-host ${LOCAL_HOST}:127.0.0.1 \
+     --shm-size 4G \
+     --pid=host \
      -itd \
      -w /$dir_name \
      $docker_base
