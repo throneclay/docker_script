@@ -63,12 +63,17 @@ function main() {
   NVIDIA_BIN=""
   NVIDIA_DEVICES=""
   if [ $USE_CUDA -eq 1 ]; then
-      echo " using cuda found nvidia driver in $host_lib_path"
+      if [ $use_nvidia_docker -eq 1 ]; then
+        echo "using cuda, using nvidia-docker, make sure you have installed nvidia-docker"
+        NVIDIA_SO="--gpus all"
+      else
+        echo "using cuda, discover driver by myself, found nvidia driver in $host_lib_path"
 
-      # these variables are the keys
-      NVIDIA_SO="$(cd $host_lib_path && ls libcuda* | xargs -I{} echo "-v $host_lib_path/{}:$docker_lib_path/{} ") $(cd $host_lib_path && ls libnvidia* | xargs -I{} echo "-v $host_lib_path/{}:$docker_lib_path/{} ")"
-      NVIDIA_BIN="-v /usr/bin/nvidia-smi:/usr/bin/nvidia-smi "
-      NVIDIA_DEVICES=$(\ls /dev/nvidia* | xargs -I{} echo '--device {}:{} ')
+        # these variables are the keys
+        NVIDIA_SO="$(cd $host_lib_path && ls libcuda* | xargs -I{} echo "-v $host_lib_path/{}:$docker_lib_path/{} ") $(cd $host_lib_path && ls libnvidia* | xargs -I{} echo "-v $host_lib_path/{}:$docker_lib_path/{} ")"
+        NVIDIA_BIN="-v /usr/bin/nvidia-smi:/usr/bin/nvidia-smi "
+        NVIDIA_DEVICES=$(\ls /dev/nvidia* | xargs -I{} echo '--device {}:{} ')
+      fi
   fi
 
   dir_name="$(pwd | rev | awk -F \/ '{print $1}' | rev)"

@@ -3,16 +3,26 @@
 # ==================================================================================
 # set up part these may vary from different hosts
 #
+
+# if using nvidia-docker, if you don't have nvidia-docker, i can discover nvidia driver by myself
+use_nvidia_docker=0
+
+#docker_base=ubuntu:18.04
 docker_base=nvidia/cuda:10.1-cudnn7-devel
 
+# for most deep learning workspace, the data path need to be shared inside docker
 data_path="-v /home/zhangshuai/workspace/data:/data"
 
+# specify options for docker, leave none if you don't have any
 specify_option=""
 
+# if you deploy or developing using tensorrt, you need to download correct version of tensorrt from nvidia
 tensorrt_root="/opt/tensorrt"
 
+# if you deploy or developing using libtorch, i can download for you, the root path is as follow
 libtorch_root="/opt/libtorch"
 
+# if using supervisor
 supervisor_config="scripts/supervisor.config"
 
 # ==================================================================================
