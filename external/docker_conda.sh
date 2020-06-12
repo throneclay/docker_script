@@ -52,10 +52,10 @@ chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda /home/$DOCKER_USER/.condarc
 echo "minconda setup success!!"
 
 mkdir -p /home/$DOCKER_USER/.config/pip/
-echo '
-[global]
-index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-' > /home/$DOCKER_USER/.config/pip/pip.conf
+#echo '
+#[global]
+#index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+#' > /home/$DOCKER_USER/.config/pip/pip.conf
 chown $DOCKER_USER: -R /home/$DOCKER_USER/.config
 chown $DOCKER_USER: -R /home/$DOCKER_USER/.cache
 echo "setup pip source success!!"
