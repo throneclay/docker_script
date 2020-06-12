@@ -140,8 +140,11 @@ function main() {
      -w /$dir_name \
      $docker_base
 
-  # in case of docker exists
-  docker start $docker_name
+  if [ $? -ne 0 ]; then
+    echo "docker exists, will skip env setup, and start docker directly"
+    # in case of docker exists
+    docker start $docker_name
+  fi
 
   # common source setup
   docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
