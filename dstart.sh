@@ -144,6 +144,7 @@ function main() {
     echo "docker exists, will skip env setup, and start docker directly"
     # in case of docker exists
     docker start $docker_name
+    exit 0
   fi
 
   # common source setup
