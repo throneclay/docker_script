@@ -47,7 +47,7 @@ unset __conda_setup
 #conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
 #conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
 
-chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda /home/$DOCKER_USER/.condarc
+#chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda /home/$DOCKER_USER/.condarc
 
 echo "minconda setup success!!"
 
