@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 
 if [ `hostname` != 'inside_docker' ]; then
   echo "need to be excuted inside docker container"
