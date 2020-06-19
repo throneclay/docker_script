@@ -1,5 +1,7 @@
 # docker scripts
 
+docker development helper scripts
+
 this is a project docker scripts collection.
 
-very easy to use..
+easy to use..

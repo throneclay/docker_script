@@ -37,3 +37,10 @@ USE_SUPERVISOR=0
 USE_TENSORRT=0
 
 USE_LIBTORCH=0
+
+# for remote develop, DONOT use in a deployment docker
+
+USE_DOCKER_SSH=0
+
+# don't use the same port of host ssh port.
+DOCKER_SSH_PORT=2222

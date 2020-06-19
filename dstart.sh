@@ -1,7 +1,6 @@
 #!/bin/bash
 
-function main() {
-
+function prepare_docker_cmd() {
   # check scripts
   # ==================================================================================
   if [ ! -f scripts/custom.sh ]; then
@@ -29,12 +28,12 @@ function main() {
   # ==================================================================================
 
   if [ $USE_TENSORRT -eq 1 ]; then
-    source docker/local_lib/docker_tensorrt.sh $tensorrt_root
+    source docker/host_lib/docker_tensorrt.sh $tensorrt_root
     specify_option="$specify_option $tensorrt_option"
   fi
 
   if [ $USE_LIBTORCH -eq 1 ]; then
-    source docker/local_lib/docker_libtorch.sh $libtorch_root
+    source docker/host_lib/docker_libtorch.sh $libtorch_root
     specify_option="$specify_option $libtorch_option"
   fi
 
@@ -139,6 +138,11 @@ function main() {
      -itd \
      -w /$dir_name \
      $docker_base
+}
+
+function create_docker_env() {
+
+  prepare_docker_cmd $*
 
   if [ $? -ne 0 ]; then
     echo "docker exists, will skip env setup, and start docker directly"
@@ -158,15 +162,20 @@ function main() {
 
   # set up users
   if [ "${USER}" != "root" ]; then
-    docker exec $docker_name bash -c 'bash docker/external/docker_adduser.sh'
+    docker exec $docker_name bash -c 'bash docker/in_docker_lib/docker_adduser.sh'
   fi
 
   if [ $USE_CONDA -eq 1 ]; then
-    docker exec $docker_name bash -c "/bin/bash docker/external/docker_conda.sh"
+    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_conda.sh"
   fi
+
+  if [ $USE_DOCKER_SSH -eq 1 ]; then
+    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_parepare_ssh.sh $DOCKER_SSH_PORT"
+  fi
+
   # deploy using supervisor
   if [ $USE_SUPERVISOR -eq 1 ]; then
-    docker exec $docker_name bash -c "/bin/bash docker/external/docker_supervisor.sh $supervisor_config"
+    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_supervisor.sh $supervisor_config"
   fi
   # custom script run
   docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
@@ -177,4 +186,4 @@ function main() {
   echo "$data_path $src_conf"
 }
 
-main $*
+create_docker_env $*

@@ -1,3 +1,0 @@
-# external
-
-execute inside docker 
