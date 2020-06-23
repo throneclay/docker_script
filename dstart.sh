@@ -186,4 +186,39 @@ function create_docker_env() {
   echo "$data_path $src_conf"
 }
 
-create_docker_env $*
+function print_usage() {
+  RED='\033[0;31m'
+  BLUE='\033[0;34m'
+  BOLD='\033[1m'
+  NONE='\033[0m'
+
+  echo -e "\n${RED}Usage${NONE}:
+  ${BOLD}bash docker/dstart.sh${NONE} Command [Option]"
+
+  echo -e "\n${RED}Command${NONE}:
+  ${BLUE}build${NONE}: build container, option: [container name]
+  ${BLUE}usage${NONE}: display this message
+  ${BLUE}create{NONE}: create docker from image, option: [image name]
+  "
+}
+
+function main() {
+  local cmd=$1
+
+  case $cmd in
+    build)
+      create_docker_env $2
+      ;;
+    create)
+      prepare_docker_cmd $2
+      ;;
+    usage)
+      print_usage
+      ;;
+    *)
+      print_usage
+      ;;
+  esac
+}
+
+main $@
