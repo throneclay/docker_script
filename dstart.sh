@@ -215,7 +215,7 @@ function commit_docker_image() {
 
   # commit helper function
   if [ $# -eq 1 ]; then
-    docker_target_name=$1:0.1.0
+    docker_target_name=$1
   else
     docker_target_name=$2
   fi
