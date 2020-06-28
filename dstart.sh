@@ -234,8 +234,8 @@ function print_usage() {
 
   echo -e "\n${RED}Command${NONE}:
   ${BLUE}create${NONE}: create docker from scratch based on custom.sh and start it. option: [container_name]
+  ${BLUE}run${NONE}: run docker from image I commited, using custom.sh sharing path, option: target_image_name [container_name]
   ${BLUE}commit${NONE}: commit the container I created. option: container_name [target_image_name]
-  ${BLUE}exec${NONE}: exec docker from image I commited, using custom.sh sharing path, option: target_image_name [container_name]
   ${BLUE}usage${NONE}: display this message
   "
 }
@@ -249,15 +249,15 @@ function main() {
       # pass args from the second to the end
       create_docker_with_post_install ${@:2}
       ;;
+    run)
+      # just run with custom sharing setup
+      # pass args from the second to the end
+      run_docker_container ${@:2}
+      ;;
     commit)
       # commit helper
       # pass args from the second to the end
       commit_docker_image ${@:2}
-      ;;
-    exec)
-      # just exec with custom sharing setup
-      # pass args from the second to the end
-      run_docker_container ${@:2}
       ;;
     usage)
       print_usage
