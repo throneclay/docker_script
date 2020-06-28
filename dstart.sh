@@ -212,12 +212,12 @@ function create_docker_with_post_install() {
 }
 
 function commit_docker_image() {
-
+  typeset -l docker_target_name
   # commit helper function
   if [ $# -eq 1 ]; then
-    docker_target_name=`typeset -l $1`
+    docker_target_name=$1
   else
-    docker_target_name=`typeset -l $2`
+    docker_target_name=$2
   fi
   echo "i will commit $1 to $docker_target_name"
   docker commit $1 $docker_target_name
