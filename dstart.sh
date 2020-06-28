@@ -1,27 +1,37 @@
 #!/bin/bash
 
-function prepare_docker_cmd() {
-  # check scripts
+# check scripts, create the default script if not found
+# ==================================================================================
+if [ ! -f scripts/custom.sh ]; then
+  echo "not found custom.sh in scripts/ will create a default one, run me again to continue"
+  mkdir -p scripts
+  cp docker/default/custom.default scripts/custom.sh
+  exit
+fi
+
+if [ ! -f scripts/env_setup.sh ]; then
+  echo "not found env_setup.sh in scripts/ will create a default one, run me again to continue"
+  mkdir -p scripts
+  cp docker/default/env_setup.default scripts/env_setup.sh
+  exit
+fi
+
+# source all the options
+source scripts/custom.sh
+
+function run_docker_container() {
+  # check args
   # ==================================================================================
-  if [ ! -f scripts/custom.sh ]; then
-    echo "not found custom.sh in scripts/ will create a default one"
-    mkdir -p scripts
-    cp docker/default/custom.default scripts/custom.sh
+  if [ $# -lt 1 ]; then
+    echo "param is not right, please checkout usage"
     exit
   fi
-
-  if [ ! -f scripts/env_setup.sh ]; then
-    echo "not found env_setup.sh in scripts/ will create a default one"
-    mkdir -p scripts
-    cp docker/default/env_setup.default scripts/env_setup.sh
-    exit
-  fi
-  source scripts/custom.sh
-
+  # check supervisor script
   if [ $USE_SUPERVISOR -eq 1 ]; then
     if [ ! -f $supervisor_config ]; then
       mkdir -p scripts
       cp docker/default/supervisor.config.default scripts/supervisor.config.default
+      exit
     fi
   fi
   # install local libs
@@ -58,6 +68,8 @@ function prepare_docker_cmd() {
      fi
   fi
 
+  # the nvidia docker can be simulated these way
+  # if your host cannot install nvidia-docker, you can use these sharing options
   NVIDIA_SO=""
   NVIDIA_BIN=""
   NVIDIA_DEVICES=""
@@ -90,8 +102,18 @@ function prepare_docker_cmd() {
       src_conf="$src_conf -v $HOME/.cache/pip:/home/$USER/.cache/pip"
     fi
   fi
-  if [ $# -eq 1 ]; then
-    docker_name="$1"
+
+  #set options based on the args
+
+  # if not base, then the entry of this function is exec, changing docker base
+  if [ $1 != "base" ]; then
+    docker_base=$1
+    echo "exec docker image using $1"
+  fi
+
+  # if docker name is passed
+  if [ $# -eq 2 ]; then
+    docker_name="$2"
   else
     docker_name="$dir_name"
   fi
@@ -112,6 +134,7 @@ function prepare_docker_cmd() {
 
   # network setup
   network_config="--net=host"
+  # TODO macinto cannot support network sharing, this might not working
   if [ "$(uname)" == "Darwin" ]; then
     network_config="-P"
   fi
@@ -140,9 +163,11 @@ function prepare_docker_cmd() {
      $docker_base
 }
 
-function create_docker_env() {
+function create_docker_with_post_install() {
+  # first of all, i need to create docker env
 
-  prepare_docker_cmd $*
+  # if you have better idea, let me know XD
+  run_docker_container base $@
 
   if [ $? -ne 0 ]; then
     echo "docker exists, will skip env setup, and start docker directly"
@@ -181,9 +206,21 @@ function create_docker_env() {
   docker exec -u ${USER} $docker_name bash -c "/bin/bash scripts/env_setup.sh"
   echo ""
   echo "docker prepare finished, next you can run bash docker/dinto.sh to get inside docker, or you can commit your own image by using:"
-  echo "  docker commit $docker_name $docker_name:0.1.0"
+  echo "bash docker/dstart.sh commit $docker_name $docker_name:0.1.0"
   echo "the shared data path is : "
   echo "$data_path $src_conf"
+}
+
+function commit_docker_image() {
+
+  # commit helper function
+  if [ $# -eq 1 ]; then
+    docker_target_name=$1:0.1.0
+  else
+    docker_target_name=$2
+  fi
+  echo "i will commit $1 to $docker_target_name"
+  docker commit $1 $docker_target_name
 }
 
 function print_usage() {
@@ -193,24 +230,34 @@ function print_usage() {
   NONE='\033[0m'
 
   echo -e "\n${RED}Usage${NONE}:
-  ${BOLD}bash docker/dstart.sh${NONE} Command [Option]"
+  ${BOLD}bash docker/dstart.sh${NONE} Command [Options]"
 
   echo -e "\n${RED}Command${NONE}:
-  ${BLUE}build${NONE}: build container, option: [container name]
+  ${BLUE}create${NONE}: create docker from scratch based on custom.sh and start it. option: [container_name]
+  ${BLUE}commit${NONE}: commit the container I created. option: container_name [target_image_name]
+  ${BLUE}exec${NONE}: exec docker from image I commited, using custom.sh sharing path, option: target_image_name [container_name]
   ${BLUE}usage${NONE}: display this message
-  ${BLUE}create{NONE}: create docker from image, option: [image name]
   "
 }
 
+# main entry
 function main() {
   local cmd=$1
-
   case $cmd in
-    build)
-      create_docker_env $2
-      ;;
     create)
-      prepare_docker_cmd $2
+      # calling docker create, with post install
+      # pass args from the second to the end
+      create_docker_with_post_install ${@:2}
+      ;;
+    commit)
+      # commit helper
+      # pass args from the second to the end
+      commit_docker_image ${@:2}
+      ;;
+    exec)
+      # just exec with custom sharing setup
+      # pass args from the second to the end
+      run_docker_container ${@:2}
       ;;
     usage)
       print_usage
@@ -222,3 +269,5 @@ function main() {
 }
 
 main $@
+
+echo "enjoy :)"
