@@ -215,9 +215,9 @@ function commit_docker_image() {
 
   # commit helper function
   if [ $# -eq 1 ]; then
-    docker_target_name=$1
+    docker_target_name=`typeset -l $1`
   else
-    docker_target_name=$2
+    docker_target_name=`typeset -l $2`
   fi
   echo "i will commit $1 to $docker_target_name"
   docker commit $1 $docker_target_name
