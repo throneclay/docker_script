@@ -108,7 +108,7 @@ function run_docker_container() {
   # if not base, then the entry of this function is exec, changing docker base
   if [ $1 != "base" ]; then
     docker_base=$1
-    echo "exec docker image using $1"
+    echo "run container using docker image: $1"
   fi
 
   # if docker name is passed
@@ -161,6 +161,10 @@ function run_docker_container() {
      -itd \
      -w /$dir_name \
      $docker_base
+}
+
+function update_docker_gid() {
+  docker exec $docker_name bash -c "groupmod -g $GRP_ID $USER"
 }
 
 function create_docker_with_post_install() {
@@ -253,6 +257,7 @@ function main() {
       # just run with custom sharing setup
       # pass args from the second to the end
       run_docker_container ${@:2}
+      update_docker_gid
       ;;
     commit)
       # commit helper
