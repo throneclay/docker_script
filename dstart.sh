@@ -177,8 +177,8 @@ function create_docker_with_post_install() {
   fi
 
   # common source setup
-  docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
-  docker exec $docker_name bash -c "/bin/sed -i 's/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list"
+  docker exec $docker_name bash -c "/bin/sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list"
+  docker exec $docker_name bash -c "/bin/sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list"
 
   if [ $USE_CUDA -eq 1 ]; then
     docker exec $docker_name bash -c "/bin/rm /etc/apt/sources.list.d/cuda.list /etc/apt/sources.list.d/nvidia-ml.list"
