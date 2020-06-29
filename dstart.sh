@@ -195,7 +195,7 @@ function create_docker_with_post_install() {
   fi
 
   if [ $USE_CONDA -eq 1 ]; then
-    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_conda.sh"
+    docker exec -u ${USER} $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_conda.sh"
   fi
 
   if [ $USE_DOCKER_SSH -eq 1 ]; then

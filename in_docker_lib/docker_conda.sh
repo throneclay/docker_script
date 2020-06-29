@@ -18,6 +18,10 @@ sudo ./Miniconda3-latest-Linux-x86_64.sh -p /opt/miniconda3 -b
 sudo rm -r /opt/miniconda3/pkgs
 sudo ln -s /opt/pkgs/ /opt/miniconda3/pkgs
 
+# change owner, because i install using sudo
+sudo chown $DOCKER_USER: -R /opt/miniconda3/
+sudo chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda
+
 echo '
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -32,8 +36,7 @@ fi
 unset __conda_setup
 ' >> /home/$DOCKER_USER/.bashrc
 
-chown $DOCKER_USER: /home/$DOCKER_USER/.bashrc
-sudo chown $DOCKER_USER: -R /opt/miniconda3/
+#chown $DOCKER_USER: /home/$DOCKER_USER/.bashrc
 
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -53,8 +56,6 @@ conda config --set show_channel_urls yes
 conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/cloud/conda-forge/
 conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/cloud/pytorch/
 
-#chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda /home/$DOCKER_USER/.condarc
-
 echo "minconda setup success!!"
 
 mkdir -p /home/$DOCKER_USER/.config/pip/
@@ -65,6 +66,6 @@ index-url = https://mirrors.aliyun.com/pypi/simple/
 [install]
 trusted-host=mirrors.aliyun.com
 ' > /home/$DOCKER_USER/.config/pip/pip.conf
-chown $DOCKER_USER: -R /home/$DOCKER_USER/.config
-chown $DOCKER_USER: -R /home/$DOCKER_USER/.cache
+sudo chown $DOCKER_USER: -R /home/$DOCKER_USER/.config
+sudo chown $DOCKER_USER: -R /home/$DOCKER_USER/.cache
 echo "setup pip source success!!"
