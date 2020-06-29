@@ -199,7 +199,7 @@ function create_docker_with_post_install() {
   fi
 
   if [ $USE_DOCKER_SSH -eq 1 ]; then
-    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_parepare_ssh.sh $DOCKER_SSH_PORT"
+    docker exec $docker_name bash -c "/bin/bash docker/in_docker_lib/docker_prepare_ssh.sh $DOCKER_SSH_PORT"
   fi
 
   # deploy using supervisor
