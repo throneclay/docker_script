@@ -15,8 +15,10 @@ if [ ! -f ./Miniconda3-latest-Linux-x86_64.sh ]; then
 fi
 chmod a+x Miniconda3-latest-Linux-x86_64.sh
 sudo ./Miniconda3-latest-Linux-x86_64.sh -p /opt/miniconda3 -b
-sudo rm -r /opt/miniconda3/pkgs
-sudo ln -s /opt/pkgs/ /opt/miniconda3/pkgs
+if [ -d /opt/pkgs ] then;
+  sudo rm -r /opt/miniconda3/pkgs
+  sudo ln -s /opt/pkgs/ /opt/miniconda3/pkgs
+fi
 
 # change owner, because i install using sudo
 sudo chown $DOCKER_USER: -R /opt/miniconda3/
