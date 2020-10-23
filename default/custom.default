@@ -8,10 +8,10 @@
 use_nvidia_docker=0
 
 #docker_base=ubuntu:18.04
-docker_base=nvidia/cuda:10.1-cudnn7-devel
+docker_base=nvidia/cuda:10.2-cudnn7-devel
 
 # for most deep learning workspace, the data path need to be shared inside docker
-data_path="-v /home/zhangshuai/workspace/data:/data"
+data_path="-v $HOME:/home_data"
 
 # specify options for docker, leave none if you don't have any
 specify_option=""
