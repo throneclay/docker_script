@@ -115,7 +115,7 @@ function run_docker_container() {
   if [ $# -eq 2 ]; then
     docker_name="$2"
   else
-    docker_name="$dir_name_${USER}"
+    docker_name="${dir_name}_${USER}"
   fi
 
   local display=""
