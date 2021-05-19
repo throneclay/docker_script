@@ -127,8 +127,8 @@ function run_docker_container() {
 
   # get user id, will be echo as env variables in docker(docker_adduser.sh)
   USER_ID=$(id -u)
-  GRP=$(id -g -n)
-  GRP_ID=$(id -g)
+  GRP=$(id -g -n | awk '{sub(/ /, "_"); print $0}')
+  GRP_ID=$(id -g) 
 
   LOCAL_HOST=`hostname`
 
@@ -191,7 +191,7 @@ function create_docker_with_post_install() {
 
   # set up users
   if [ "${USER}" != "root" ]; then
-    docker exec $docker_name bash -c 'bash docker/in_docker_lib/docker_adduser.sh'
+    docker exec -u root $docker_name bash -c 'bash docker/in_docker_lib/docker_adduser.sh'
   fi
 
   if [ $USE_CONDA -eq 1 ]; then

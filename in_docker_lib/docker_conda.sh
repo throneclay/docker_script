@@ -11,7 +11,7 @@ fi
 
 if [ ! -f ./Miniconda3-latest-Linux-x86_64.sh ]; then
   sudo apt-get install wget -y
-  wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  wget https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
 fi
 chmod a+x Miniconda3-latest-Linux-x86_64.sh
 sudo ./Miniconda3-latest-Linux-x86_64.sh -p /opt/miniconda3 -b
