@@ -11,10 +11,12 @@ fi
 
 if [ ! -f ./Miniconda3-latest-Linux-x86_64.sh ]; then
   sudo apt-get install wget -y
-  wget https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  #wget https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  #wget https://mirrors.tuna.tsinghua.edu.cn/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
+  wget https://repo.anaconda.com/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh -O Miniconda.sh
 fi
-chmod a+x Miniconda3-latest-Linux-x86_64.sh
-sudo ./Miniconda3-latest-Linux-x86_64.sh -p /opt/miniconda3 -b
+chmod a+x Miniconda.sh
+sudo ./Miniconda.sh -p /opt/miniconda3 -b
 if [ -d /opt/pkgs ]; then
   sudo rm -r /opt/miniconda3/pkgs
   sudo ln -s /opt/pkgs/ /opt/miniconda3/pkgs
@@ -22,6 +24,7 @@ fi
 
 # change owner, because i install using sudo
 sudo chown $DOCKER_USER: -R /opt/miniconda3/
+sudo mv /root/.conda /home/$DOCKER_USER/.conda
 sudo chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda
 
 echo '
@@ -52,11 +55,11 @@ else
 fi
 unset __conda_setup
 
-conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/pkgs/free/
-conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/pkgs/main/
-conda config --set show_channel_urls yes
-conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/cloud/conda-forge/
-conda config --add channels https://mirrors.bfsu.edu.cn/anaconda/cloud/pytorch/
+#conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+#conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+#conda config --set show_channel_urls yes
+#conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+#conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
 
 echo "minconda setup success!!"
 
