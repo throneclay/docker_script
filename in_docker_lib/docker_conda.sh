@@ -9,7 +9,7 @@ fi
 # common part
 # ================================================================================================
 
-if [ ! -f ./Miniconda3-latest-Linux-x86_64.sh ]; then
+if [ ! -f ./Miniconda.sh ]; then
   sudo apt-get install wget -y
   #wget https://mirrors.bfsu.edu.cn/anaconda/miniconda/Miniconda3-latest-Linux-x86_64.sh
   #wget https://mirrors.tuna.tsinghua.edu.cn/miniconda/Miniconda3-py38_4.10.3-Linux-x86_64.sh
