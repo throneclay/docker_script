@@ -24,7 +24,7 @@ fi
 
 # change owner, because i install using sudo
 sudo chown $DOCKER_USER: -R /opt/miniconda3/
-sudo mv /root/.conda /home/$DOCKER_USER/.conda
+#sudo mv /root/.conda /home/$DOCKER_USER/.conda
 sudo chown $DOCKER_USER: -R /home/$DOCKER_USER/.conda
 
 echo '
